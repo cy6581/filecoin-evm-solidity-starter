@@ -6,3 +6,8 @@ exports.storeAll = require("./filecoin-market-consumer/store-all")
 exports.addCID = require("./deal-rewarder/add-cid")
 exports.fund = require("./deal-rewarder/fund")
 exports.claimBounty = require("./deal-rewarder/claim-bounty")
+
+exports.saveDeal = require("./deal-registry/save-deal")
+exports.isDealRegistered = require("./deal-registry/is-deal-registered")
+// exports.lookupDealClient = require("./deal-api/lookup-deal-client")
+// exports.lookupDealProvider = require("./deal-api/lookup-deal-provider")

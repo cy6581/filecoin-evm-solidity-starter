@@ -10,26 +10,32 @@ const wallet = new ethers.Wallet(private_key, ethers.provider)
 module.exports = async ({ deployments }) => {
     console.log("Wallet Ethereum Address:", wallet.address)
     const chainId = network.config.chainId
-    const tokensToBeMinted = networkConfig[chainId]["tokensToBeMinted"]
 
-    //deploy Simplecoin
-    const SimpleCoin = await ethers.getContractFactory('SimpleCoin', wallet);
-    console.log('Deploying Simplecoin...');
-    const simpleCoin = await SimpleCoin.deploy(tokensToBeMinted);
-    await simpleCoin.deployed()
-    console.log('SimpleCoin deployed to:', simpleCoin.address);
+    const DealRegistry = await ethers.getContractFactory('DealRegistry', wallet);
+    console.log('Deploying DealRegistry...')
+    const dealRegistry = await DealRegistry.deploy();
+    await dealRegistry.deployed();
+    console.log('DealRegistry deployed to:', dealRegistry.address);
+    
+    // //deploy Simplecoin
+    // const tokensToBeMinted = networkConfig[chainId]["tokensToBeMinted"]
+    // const SimpleCoin = await ethers.getContractFactory('SimpleCoin', wallet);
+    // console.log('Deploying Simplecoin...');
+    // const simpleCoin = await SimpleCoin.deploy(tokensToBeMinted);
+    // await simpleCoin.deployed()
+    // console.log('SimpleCoin deployed to:', simpleCoin.address);
 
-    //deploy FilecoinMarketConsumer
-    const FilecoinMarketConsumer = await ethers.getContractFactory('FilecoinMarketConsumer', wallet);
-    console.log('Deploying FilecoinMarketConsumer...');
-    const filecoinMarketConsumer = await FilecoinMarketConsumer.deploy();
-    await filecoinMarketConsumer.deployed()
-    console.log('FilecoinMarketConsumer deployed to:', filecoinMarketConsumer.address);
+    // //deploy FilecoinMarketConsumer
+    // const FilecoinMarketConsumer = await ethers.getContractFactory('FilecoinMarketConsumer', wallet);
+    // console.log('Deploying FilecoinMarketConsumer...');
+    // const filecoinMarketConsumer = await FilecoinMarketConsumer.deploy();
+    // await filecoinMarketConsumer.deployed()
+    // console.log('FilecoinMarketConsumer deployed to:', filecoinMarketConsumer.address);
 
-    //deploy DealRewarder
-    const DealRewarder = await ethers.getContractFactory('DealRewarder', wallet);
-    console.log('Deploying DealRewarder...');
-    const dealRewarder = await DealRewarder.deploy();
-    await dealRewarder.deployed()
-    console.log('DealRewarder deployed to:', dealRewarder.address);
+    // //deploy DealRewarder
+    // const DealRewarder = await ethers.getContractFactory('DealRewarder', wallet);
+    // console.log('Deploying DealRewarder...');
+    // const dealRewarder = await DealRewarder.deploy();
+    // await dealRewarder.deployed()
+    // console.log('DealRewarder deployed to:', dealRewarder.address);
 }
