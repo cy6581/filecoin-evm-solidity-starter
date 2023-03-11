@@ -6,12 +6,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 
 import {DealRegistry} from "../deal-registry/DealRegistry.sol";
 
-// TODO, access control stuff
-// TODO, test reversion on transfer
-
 contract WatermarkTokenERC721 is ERC721, AccessControl {
-    bytes32 public constant ISSUER_ROLE = keccak256("ISSUER_ROLE");
-
     uint256 nextTokenId;
     string uri;
     int64 blockHeight = 155290; // workaround, should be fetched dynamically
@@ -21,8 +16,9 @@ contract WatermarkTokenERC721 is ERC721, AccessControl {
         int64 tokenIssued;
     }
     TokenInfo[] issuedTokens; // token ID is index
-
     DealRegistry dealRegistry;
+
+    mapping(address => uint64) ethToF0;
 
     constructor(
         address _owner,
@@ -32,7 +28,6 @@ contract WatermarkTokenERC721 is ERC721, AccessControl {
         address _dealRegistry
     ) ERC721(name, symbol) {
         _setupRole(DEFAULT_ADMIN_ROLE, _owner);
-        _setupRole(ISSUER_ROLE, _owner);
         uri = _uri;
         dealRegistry = DealRegistry(_dealRegistry);
     }
@@ -66,39 +61,39 @@ contract WatermarkTokenERC721 is ERC721, AccessControl {
     }
 
     // as long as provider has > 3 valid deals during the period
-    // can be adjusted
-    function canClaimToken(address claimant) private returns (bool) {
-        // TODO remove hardcode
-        uint64 provider = 1100;
-        // recognise anything in last 999999 epochs, should sync up to NFT validity
-        int64 epochCountToCheck = 999999;
-        int64 validCount = dealRegistry.countRegisteredDeals(
-            provider,
-            blockHeight,
-            epochCountToCheck
-        );
+    // adjust parameters to increase the difficulty
+    function canClaimToken(address claimant) private view returns (bool) {
+        uint64 provider = getAddress(claimant);
+        // check as far back as NFT tokens are valid for, so that token validity = period of verified deals
+        int64 validCount = dealRegistry.countRegisteredDeals(provider, blockHeight, tokenValidity);
         return validCount > 3;
     }
 
     //
-    // ISSUER only
+    // ADDRESS
+    // TODO, move these Address getter/ setters and the data storage to a separate Address Oracle contract
+    function setAddress(address ethAddress, uint64 f0Address) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        ethToF0[ethAddress] = f0Address;
+    }
 
-    // work around, should otherwise fetch the latest blockHeight from chain
-    // TODO put back
-    // function setBlockHeight(int64 _blockHeight) public virtual onlyRole(ISSUER_ROLE) {
-    function setBlockHeight(int64 _blockHeight) public virtual {
+    function getAddress(address ethAddress) private view returns (uint64) {
+        uint64 f0 = ethToF0[ethAddress];
+        require(f0 != 0, "Address is not registered as a provider");
+        return f0;
+    }
+
+    //
+    // ADMIN only
+    // TODO should otherwise fetch the latest blockHeight from chain APIs
+    function setBlockHeight(int64 _blockHeight) public virtual onlyRole(DEFAULT_ADMIN_ROLE) {
         blockHeight = _blockHeight;
     }
 
-    // TODO
-    // function setBlockHeight(int64 _blockHeight) public virtual onlyRole(ISSUER_ROLE) {
-    function setTokenValidity(int64 _tokenValidity) public virtual {
+    function setTokenValidity(int64 _tokenValidity) public virtual onlyRole(DEFAULT_ADMIN_ROLE) {
         tokenValidity = _tokenValidity;
     }
 
-    // TODO put back authz
-    // function burnExpired() public virtual onlyRole(ISSUER_ROLE) {
-    function burnExpired() public virtual {
+    function burnExpired() public virtual onlyRole(DEFAULT_ADMIN_ROLE) {
         for (uint256 i = 0; i < nextTokenId; i++) {
             if (issuedTokens[i].tokenIssued + tokenValidity < blockHeight) {
                 _burn(i);

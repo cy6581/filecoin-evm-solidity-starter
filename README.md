@@ -1,5 +1,10 @@
 # FEVM Hardhat Kit
 
+DELETE ME 
+- // NICE-TO-HAVE, test reversion on transfer
+
+
+
 ## Cloning the Repo
 
 Open up your terminal (or command prompt) and navigate to a directory you would like to store this code on. Once there type in the following command:

@@ -1,8 +1,5 @@
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers")
 
-// TODO remove if not used
-const { smock } = require("@defi-wonderland/smock")
-
 const buildTestFixtures = async () => {
     const marketAPIFactory = await ethers.getContractFactory("FakeMarketAPIWrapped")
     const fakeMarketAPI = await marketAPIFactory.deploy()
@@ -12,7 +9,7 @@ const buildTestFixtures = async () => {
 
     const WatermarkTokenERC721 = await ethers.getContractFactory("WatermarkTokenERC721")
 
-    const [deployRole, userARole] = await ethers.getSigners()
+    const [deployRole, userARole, userBRole] = await ethers.getSigners()
     const name = "FOO"
     const symbol = "BAR"
     const uri = "ipfs://foobar"
@@ -30,6 +27,7 @@ const buildTestFixtures = async () => {
         watermarkTokenERC721,
         deployRole,
         userARole,
+        userBRole,
     }
 }
 // supposedly loadFixture is an optimisation
