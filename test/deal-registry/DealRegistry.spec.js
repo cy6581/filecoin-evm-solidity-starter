@@ -1,5 +1,5 @@
 const { expect } = require("chai")
-const { createTestingModule } = require("./setup")
+const { createTestingModule } = require("../setup")
 
 describe("DealRegistry contract", () => {
     const dealId = "54"
@@ -25,19 +25,19 @@ describe("DealRegistry contract", () => {
         ).to.eql(0n)
     })
 
-    it("registerDeal, should add verified deals to the Registry", async () => {
+    it("should, using registerDeal, add verified deals to the Registry", async () => {
         await fakeMarketAPI.set_deal_verified(true)
         await dealRegistry.registerDeal(dealId)
         expect(await dealRegistry.isDealCollected(dealId)).to.eql(true)
     })
 
-    it("registerDeal, should revert on unverified deals", async () => {
+    it("should, using registerDeal, revert on unverified deals", async () => {
         await fakeMarketAPI.set_deal_verified(false)
         await expect(dealRegistry.registerDeal(dealId)).to.be.reverted
         expect(await dealRegistry.isDealCollected(dealId)).to.eql(false)
     })
 
-    it("countRegisteredDeals, should correctly count the registered deals based on time passed", async () => {
+    it("should, using countRegisteredDeals, correctly count the registered deals based on time passed", async () => {
         await fakeMarketAPI.set_deal_verified(true)
         await fakeMarketAPI.set_deal_provider(provider)
         await fakeMarketAPI.set_deal_end_epoch(dealEndEpoch)
@@ -104,6 +104,4 @@ describe("DealRegistry contract", () => {
             BigInt(await dealRegistry.countRegisteredDeals(otherProvider, nowEpoch, epochCutoff))
         ).to.eql(1n)
     })
-
-    // TODO, count based on offset
 })
