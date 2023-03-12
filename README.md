@@ -17,13 +17,13 @@ Do note that these NFTs do not last forever. Their duration is customisable by t
 
 #### Role-based access control 
 Storage providers can verify their deals claim an NFT if they have enough recent deals. 
-Contract Admin can remove NFTs that are past their validity period 
+Contract Admin can remove NFTs that are past their validity period.
 
 #### Time-based checks 
-To incentivise recent deals, the contract Admin can adjust time window for relevant deals to be included, and tweak the expiry period of NFTs
+To incentivise recent deals, the contract Admin can adjust time window for relevant deals to be included, and tweak the expiry period of NFTs.
 
 #### Open Deal Registry
-- Anyone can submit deals for verification. Usually it would be the Deal Provider who has incentive to do so, but Storage Clients can also do so if they are satisfied with the service.
+Anyone can submit deals for verification. Usually it would be the Deal Provider who has incentive to do so, but Storage Clients can also do so if they are satisfied with the service.
 
 
 ### PROJECT Challenges/ Limitations (as of 12 March 2023)
@@ -54,7 +54,7 @@ yarn install
 2. Add your private keys as environment variables
 Create a `.env` file from `.env.example`.
 You can use the same private key for both if you do not intend to actually deploy. 
-Take care not to commit this file. By default it is ignored by Git.
+*Take care not to commit this file!* By default it is ignored by Git.
 
 3. Get the address for your private keys.
 Modify the `get-address.js` script accordingly to fetch the address for the respective private key. 
@@ -75,10 +75,13 @@ yarn test
 There is a set of contracts deployed to HyperSpace with these details.
 
 Deployer Account Address - 0xA6F5b661F40DCE124Fd1E19EE5ebd0f04956B0C9
-(Fake) Storage Provider Account Address - 0xd08aAa72633414877Cb53CF2fb2b62B980f24Fd1
+
+Storage Provider (Mokced) Account Address - 0xd08aAa72633414877Cb53CF2fb2b62B980f24Fd1
 
 MarketAPIWrapped deployed at 0xD9994B2F7ad6A6e7fEceA316B3B181aCc20f09a4
+
 DealRegistry deployed at 0x880A07d4c8de187D3692B7717207ba96d6936931
+
 WatermarkTokenERC721 deployed at 0xE36ACdE139474e3f32BFefC95B0BE805E14b415B
 
 A WatermarkTokenERC721 has been issued to 0xd08aAa72633414877Cb53CF2fb2b62B980f24Fd1 with ID 0.
@@ -93,7 +96,7 @@ yarn hardhat is-deal-registered --dealid "50"
 
 
 #### Deployment
-1. Set your private keys if not done.
+1. Complete installation and set up if not done.
 Note you need two separate accounts if you wish to try as both an Admin and a Storage provider. 
 
 2. Run the hardhat deploy task which will deploy these contracts in order.
