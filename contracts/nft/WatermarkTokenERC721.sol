@@ -10,7 +10,7 @@ contract WatermarkTokenERC721 is ERC721, AccessControl {
     uint256 nextTokenId;
     string uri;
     int64 blockHeight = 155290; // workaround, should be fetched dynamically
-    int64 tokenValidity = 1000; // default for 1000 epochs
+    int64 tokenValidity = 99999999;
 
     struct TokenInfo {
         int64 tokenIssued;

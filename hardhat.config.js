@@ -5,7 +5,8 @@ require("@nomicfoundation/hardhat-chai-matchers") // add chai matchers e.g. be r
 require("./tasks")
 require("dotenv").config()
 
-const PRIVATE_KEY = process.env.PRIVATE_KEY
+const PRIVATE_KEY_DEPLOYER = process.env.PRIVATE_KEY_DEPLOYER
+const PRIVATE_KEY_PROVIDER = process.env.PRIVATE_KEY_PROVIDER
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
     solidity: {
@@ -16,7 +17,7 @@ module.exports = {
         hyperspace: {
             chainId: 3141,
             url: "https://api.hyperspace.node.glif.io/rpc/v1",
-            accounts: [PRIVATE_KEY],
+            accounts: [PRIVATE_KEY_DEPLOYER, PRIVATE_KEY_PROVIDER],
         },
     },
     paths: {
