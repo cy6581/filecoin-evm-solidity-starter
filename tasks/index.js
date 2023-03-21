@@ -1,5 +1,4 @@
 exports.getAddress = require("./get-address")
-exports.cidToBytes = require("./cid-to-bytes")
 
 exports.getDealEndEpoch = require("./filecoin-api-wrapper/get-deal-end-epoch")
 
